@@ -13,7 +13,11 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<Customer> getInfoCustomers(){
+    public List<Customer> getInfoCustomers() {
         return customerRepository.findAll();
+    }
+
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.saveAndFlush(customer);
     }
 }
