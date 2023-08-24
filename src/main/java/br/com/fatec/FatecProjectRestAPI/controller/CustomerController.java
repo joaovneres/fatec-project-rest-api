@@ -20,11 +20,10 @@ public class CustomerController {
     @GetMapping(value = "/list")
     public ResponseEntity<Object> listCustomers(){
         List<Customer> result  = customerService.getInfoCustomers();
-        return ResponseEntity.ok().body(ResponseGenericException.response(result));
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseGenericException.response(result));
     }
 
     @PostMapping(value = "/create")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> saveCustomer(@RequestBody Customer customer){
         Customer result = customerService.saveCustomer(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseGenericException.response(result));
