@@ -35,7 +35,7 @@ public class CustomerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado")));
         customerRepository.delete(customer.get());
         HashMap<String, Object> result = new HashMap<>();
-        result.put("result", "Cliente: " + customer.get().getFirstNameCustomer() + " "
+        result.put("message", "Cliente: " + customer.get().getFirstNameCustomer() + " "
                 + customer.get().getLastNameCustomer() + " excluído com sucesso!");
         return result;
     }
