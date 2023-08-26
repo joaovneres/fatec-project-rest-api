@@ -40,6 +40,24 @@ public class CustomerService {
         return result;
     }
 
+    public Optional<Customer> findCustomerById(Long idCustomer) {
+        return Optional.ofNullable(customerRepository.findById(idCustomer)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Cliente não encontrado")));
+    }
+
+    public Customer updateCustomer(Customer customer) {
+        if (validateCustomer(customer)) {
+            if (findCustomerById(customer.getIdCustomer()) != null) {
+                return customerRepository.saveAndFlush(customer);
+            } else {
+                return null;
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Problemas ao alterar cliente, a renda salarial deve ser maior ou igual 0!");
+        }
+    }
+
     public Boolean validateCustomer(Customer customer) {
         if (customer.getMonthlyIncomeCustomer() != null &&
                 customer.getMonthlyIncomeCustomer().compareTo(BigDecimal.valueOf(0)) >= 0 &&

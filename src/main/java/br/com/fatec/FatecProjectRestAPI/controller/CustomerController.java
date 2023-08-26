@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/customer")
@@ -34,6 +35,18 @@ public class CustomerController {
     @DeleteMapping(value = "/delete/{idCustomer}")
     public ResponseEntity<Object> deleteCustomer(@PathVariable Long idCustomer) {
         HashMap<String, Object> result = customerService.deleteCustomer(idCustomer);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseGenericException.response(result));
+    }
+
+    @GetMapping(value = "/findCustomer/{idCustomer}")
+    public ResponseEntity<Object> getCustomerById(@PathVariable Long idCustomer) {
+        Optional<Customer> result = customerService.findCustomerById((idCustomer));
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseGenericException.response(result));
+    }
+
+    @PutMapping(value = "/update")
+    public ResponseEntity<Object> updateCustomer(@RequestBody Customer customer) {
+        Customer result = customerService.updateCustomer(customer);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseGenericException.response(result));
     }
 }
