@@ -26,7 +26,7 @@ public class ProductService {
         if (validateProduct(product)) {
             return productRepository.saveAndFlush(product);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O preço de custo e o a quantidade devem ser maior que 0!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O preço de custo e a quantidade devem ser maior que 0!");
         }
     }
 
@@ -45,7 +45,7 @@ public class ProductService {
 
     public Product updateProduct(Product product) {
         if (validateProduct(product)) {
-            if (findProductById(product.getIdProduct()) != null) {
+            if (findProductById(product.getIdProduct()).isPresent()) {
                 return productRepository.saveAndFlush(product);
             } else {
                 return null;
