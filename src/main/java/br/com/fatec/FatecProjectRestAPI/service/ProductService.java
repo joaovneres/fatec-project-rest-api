@@ -30,10 +30,29 @@ public class ProductService {
         }
     }
 
-    public HashMap<String, Object> deleteProduct(Long idProduct){
+    public HashMap<String, Object> deleteProduct(Long idProduct) {
         Optional<Product> product = Optional.ofNullable(productRepository.findById(idProduct)
-                .orElseThrow()
-        )
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado")));
+        productRepository.delete(product.get());
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("message", "Produto " + product.get().getNameProduct() + " excluído com sucesso!");
+        return result;
+    }
+
+    public Optional<Product> findProductById(Long idProduct) {
+        return Optional.ofNullable(productRepository.findById(idProduct).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado!")));
+    }
+
+    public Product updateProduct(Product product) {
+        if (validateProduct(product)) {
+            if (findProductById(product.getIdProduct()) != null) {
+                return productRepository.saveAndFlush(product);
+            } else {
+                return null;
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Problemas ao encontrar produto!");
+        }
     }
 
     public Boolean validateProduct(Product product) {
